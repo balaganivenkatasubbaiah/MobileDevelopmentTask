@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     String[] SPINNERLIST1 = {"Android Material Design", "Material Design Spinner", "Spinner Using Material Library", "Material Spinner Example"};
     String[] SPINNERLIST2 = {"Android Material Design", "Material Design Spinner", "Spinner Using Material Library", "Material Spinner Example"};
     private MaterialBetterSpinner currentLocationSpinner,experienceSpinner,academeicQualSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

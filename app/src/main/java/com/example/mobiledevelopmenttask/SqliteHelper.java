@@ -94,7 +94,7 @@ public class SqliteHelper extends SQLiteOpenHelper
                 KEY_RELIGION + " TEXT,"+ KEY_GENDER + " TEXT,"+ KEY_MARTIALSTATUS + " TEXT,"+KEY_EXAMINATION_LEVEL + " TEXT,"+
                 KEY_PASSING_YEAR + " TEXT,"+KEY_BOARD_UNIVERSITY + " TEXT,"+ KEY_MARKS + " TEXT,"+ KEY_DIVISION_GRADE + " TEXT,"+
                 KEY_MAJOR_SUBJECTS + " TEXT,"+ KEY_CAST_CATEGORY + " TEXT,"+ KEY_POST_HELD + " TEXT,"+ KEY_OFFICE_INST + " TEXT,"
-                /*+ KEY_FROM + " TEXT,"+KEY_TO + " TEXT,"*/+ KEY_SCALE_OF_PAY + " TEXT,"+KEY_NATURE_OF_DUTIES + " TEXT,"+
+                +KEY_FROM + " TEXT,"+KEY_TO + " TEXT,"+ KEY_SCALE_OF_PAY + " TEXT,"+KEY_NATURE_OF_DUTIES + " TEXT,"+
                 KEY_NATURE_OF_PRESENT_EMP + " TEXT,"+ KEY_TOTAL_EMOLUMENTS + " TEXT,"+ KEY_ADDITIONAL_INFO + " TEXT,"+
                 KEY_REMARKS + " TEXT,"+ KEY_EXACT_NAME_OF_POST + " TEXT,"+ KEY_ORGANISATION_NAME + " TEXT,"+
                 KEY_DURATION + " TEXT,"+ KEY_JOB_DESCRIPT + " TEXT,"+ KEY_DATE + " TEXT,"+ KEY_FULL_NAME + " TEXT,"+
@@ -147,8 +147,8 @@ public class SqliteHelper extends SQLiteOpenHelper
         values.put(KEY_CAST_CATEGORY, registerBean.getCastCategory());
         values.put(KEY_POST_HELD, registerBean.getPostHeld());
         values.put(KEY_OFFICE_INST, registerBean.getOfficeInst());
-        //values.put(KEY_FROM, registerBean.getFrom());
-        //values.put(KEY_TO, registerBean.getTo());
+        values.put(KEY_FROM, registerBean.getFrom());
+        values.put(KEY_TO, registerBean.getTo());
         values.put(KEY_SCALE_OF_PAY, registerBean.getScaleOfPay());
         values.put(KEY_NATURE_OF_DUTIES, registerBean.getNatureOfDuties());
         values.put(KEY_NATURE_OF_PRESENT_EMP, registerBean.getNatureOfPresentEmp());

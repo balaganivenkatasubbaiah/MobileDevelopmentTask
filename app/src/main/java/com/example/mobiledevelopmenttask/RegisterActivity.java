@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -115,6 +116,32 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         durationSpinner = (MaterialBetterSpinner) findViewById(R.id.duration_spinner);
         jobDescriptSpinner = (EditText) findViewById(R.id.job_description_spinner);
 
+        isPermanentSameAsCurrent = (CheckBox) findViewById(R.id.check_current_same_as_permanent);
+        isPermanentSameAsCurrent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if(b)
+                {
+                    inputPermanetAddress1.setText(inputCurrentAddress1.getText().toString().trim());
+                    inputPermanetAddress2.setText(inputCurrentAddress2.getText().toString().trim());
+                    inputPermanetPincode.setText(inputCurrentPincode.getText().toString().trim());
+                    inputPermanetCity.setText(inputCurrentCity.getText().toString().trim());
+                    inputPermanetDistrict.setText(inputCurrentDistrict.getText().toString().trim());
+                    inputPermanetState.setText(inputCurrentState.getText().toString().trim());
+
+                }
+                else
+                {
+                    inputPermanetAddress1.setText(" ");
+                    inputPermanetAddress2.setText(" ");
+                    inputPermanetPincode.setText(" ");
+                    inputPermanetCity.setText(" ");
+                    inputPermanetDistrict.setText(" ");
+                    inputPermanetState.setText(" ");
+                }
+            }
+        });
         register = (Button) findViewById(R.id.btn_register);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
