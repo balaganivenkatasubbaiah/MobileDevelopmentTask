@@ -57,6 +57,7 @@
                             android:id="@+id/input_aadhar_number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="number"
                             android:hint="@string/aadhar_number" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -81,6 +82,7 @@
                             android:id="@+id/input_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="number"
                             android:hint="@string/phone_number" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -94,6 +96,7 @@
                             android:id="@+id/input_date_of_birth"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="date"
                             android:hint="@string/date_of_birth" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -482,7 +485,8 @@
                     android:id="@+id/input_marks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/marks" />
+                    android:hint="@string/marks"
+                    android:inputType="numberDecimal"/>
             </android.support.design.widget.TextInputLayout>
 
 

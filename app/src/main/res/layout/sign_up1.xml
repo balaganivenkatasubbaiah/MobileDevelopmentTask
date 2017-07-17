@@ -106,7 +106,7 @@
                 android:id="@+id/input_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:hint="@string/phone_number" />
         </android.support.design.widget.TextInputLayout>
 
