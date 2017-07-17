@@ -13,29 +13,28 @@ import android.util.Log;
 public class MyDataBase extends SQLiteOpenHelper
 {
     Context context;
-    public static String ename;
-    public static String ephone;
-    public static String epassword;
-    public static String tablename;
+    // Database Version
+    private static final int DATABASE_VERSION = 1;
 
-    static
-    {
-        tablename = "employeedetails";
-        ename = "ename";
-        ephone = "ephone";
-        epassword="epassword";
-    }
+    // Database Name
+    private static final String DATABASE_NAME = "registerManagerr.db";
+
+    // Contacts table name
+    private static final String TABLE_CONTACTS = "employeedetails";
+    private static final String KEY_NAME= "ename";
+    private static final String KEY_PHONE= "ephone";
+    private static final String KEY_PASSWORD= "epassword";
 
     public MyDataBase(MainActivity mainActivity, String mydb)
     {
-        super(mainActivity, mydb, null, 1);
+        super(mainActivity, DATABASE_NAME, null, DATABASE_VERSION);
         context=mainActivity;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("CREATE TABLE " + tablename + "(" + ename + " TEXT," + ephone + " TEXT," +  epassword + " TEXT"+")");
+        db.execSQL("CREATE TABLE " + TABLE_CONTACTS + "(" + KEY_NAME + " TEXT," + KEY_PHONE + " TEXT," +  KEY_PASSWORD + " TEXT"+")");
 
     }
 
@@ -49,10 +48,10 @@ public class MyDataBase extends SQLiteOpenHelper
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ename, empname);
-        values.put(ephone, empcellno);
-        values.put(epassword, emppass);
-        db.insert(tablename, null, values);
+        values.put(KEY_NAME, empname);
+        values.put(KEY_PHONE, empcellno);
+        values.put(KEY_PASSWORD, emppass);
+        db.insert(TABLE_CONTACTS, null, values);
         Log.e("msg", "record inserted succusfully: id:"+" ename:"+empname+" ephone: "+empcellno+" emppassword: "+emppass);
 
     }
