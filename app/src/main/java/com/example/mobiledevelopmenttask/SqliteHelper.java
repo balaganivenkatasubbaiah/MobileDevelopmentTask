@@ -17,10 +17,10 @@ public class SqliteHelper extends SQLiteOpenHelper
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "registerManager";
+    private static final String DATABASE_NAME = "registerManagerr.db";
 
     // Contacts table name
-    private static final String TABLE_CONTACTS = "profile";
+    private static final String TABLE_CONTACTS = "UserProfile";
 
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
@@ -58,8 +58,8 @@ public class SqliteHelper extends SQLiteOpenHelper
     private static final String KEY_CAST_CATEGORY = "cast_category";
     private static final String KEY_POST_HELD = "post_held";
     private static final String KEY_OFFICE_INST = "office_institue";
-    private static final String KEY_FROM = "from";
-    private static final String KEY_TO = "to";
+    private static final String KEY_FROM = "from_date";
+    private static final String KEY_TO = "to_date";
     private static final String KEY_SCALE_OF_PAY = "scale_of_pay";
     private static final String KEY_NATURE_OF_DUTIES = "nature_of_duties";
     private static final String KEY_NATURE_OF_PRESENT_EMP = "nature_of_present_emp";
@@ -73,6 +73,7 @@ public class SqliteHelper extends SQLiteOpenHelper
     private static final String KEY_DATE = "date";
     private static final String KEY_FULL_NAME = "full_name";
     private static final String KEY_SIGNATURE = "signature";
+    private static final String KEY_PROFILEPIC = "profile_pic";
 
 
     private  Context context;
@@ -94,11 +95,11 @@ public class SqliteHelper extends SQLiteOpenHelper
                 KEY_RELIGION + " TEXT,"+ KEY_GENDER + " TEXT,"+ KEY_MARTIALSTATUS + " TEXT,"+KEY_EXAMINATION_LEVEL + " TEXT,"+
                 KEY_PASSING_YEAR + " TEXT,"+KEY_BOARD_UNIVERSITY + " TEXT,"+ KEY_MARKS + " TEXT,"+ KEY_DIVISION_GRADE + " TEXT,"+
                 KEY_MAJOR_SUBJECTS + " TEXT,"+ KEY_CAST_CATEGORY + " TEXT,"+ KEY_POST_HELD + " TEXT,"+ KEY_OFFICE_INST + " TEXT,"
-                +KEY_FROM + " TEXT,"+KEY_TO + " TEXT,"+ KEY_SCALE_OF_PAY + " TEXT,"+KEY_NATURE_OF_DUTIES + " TEXT,"+
+                + KEY_SCALE_OF_PAY + " TEXT,"+KEY_NATURE_OF_DUTIES + " TEXT,"+
                 KEY_NATURE_OF_PRESENT_EMP + " TEXT,"+ KEY_TOTAL_EMOLUMENTS + " TEXT,"+ KEY_ADDITIONAL_INFO + " TEXT,"+
                 KEY_REMARKS + " TEXT,"+ KEY_EXACT_NAME_OF_POST + " TEXT,"+ KEY_ORGANISATION_NAME + " TEXT,"+
                 KEY_DURATION + " TEXT,"+ KEY_JOB_DESCRIPT + " TEXT,"+ KEY_DATE + " TEXT,"+ KEY_FULL_NAME + " TEXT,"+
-                KEY_SIGNATURE + " TEXT"+ ")";
+                KEY_SIGNATURE + " TEXT,"+ KEY_PROFILEPIC + " BLOB"+KEY_FROM + " TEXT," +KEY_TO + " TEXT"+ ")";
         sqLiteDatabase.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -114,6 +115,7 @@ public class SqliteHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(KEY_ID, registerBean.getReferenceNumber());
         values.put(KEY_AADHAR, registerBean.getAadharNumber());
         values.put(KEY_NAME, registerBean.getPersonName()); // Contact Name
         values.put(KEY_PH_NO, registerBean.getPhoneNumber()); // Contact Phone Number
@@ -147,8 +149,6 @@ public class SqliteHelper extends SQLiteOpenHelper
         values.put(KEY_CAST_CATEGORY, registerBean.getCastCategory());
         values.put(KEY_POST_HELD, registerBean.getPostHeld());
         values.put(KEY_OFFICE_INST, registerBean.getOfficeInst());
-        values.put(KEY_FROM, registerBean.getFrom());
-        values.put(KEY_TO, registerBean.getTo());
         values.put(KEY_SCALE_OF_PAY, registerBean.getScaleOfPay());
         values.put(KEY_NATURE_OF_DUTIES, registerBean.getNatureOfDuties());
         values.put(KEY_NATURE_OF_PRESENT_EMP, registerBean.getNatureOfPresentEmp());
@@ -162,10 +162,12 @@ public class SqliteHelper extends SQLiteOpenHelper
         values.put(KEY_DATE, registerBean.getDate());
         values.put(KEY_FULL_NAME, registerBean.getFullNameOfCandidate());
         values.put(KEY_SIGNATURE, registerBean.getSignature());
-
+        values.put(KEY_PROFILEPIC,registerBean.getImage());
+        values.put(KEY_FROM, registerBean.getFrom());
+        values.put(KEY_TO, registerBean.getTo());
         // Inserting Row
         db.insert(TABLE_CONTACTS, null, values);
-        Toast.makeText(context,"Data added succesfully",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"Data Inserted succesfully",Toast.LENGTH_SHORT).show();
         db.close(); // Closing database connection
     }
 }

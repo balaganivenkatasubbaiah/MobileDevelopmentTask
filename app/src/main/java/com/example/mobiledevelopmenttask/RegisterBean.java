@@ -6,9 +6,17 @@ package com.example.mobiledevelopmenttask;
 
 public class RegisterBean
 {
-    private String referenceNumber;
     private String aadharNumber;
     private String personName;
+    private byte[] image;
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     public String getSignature() {
         return signature;
@@ -405,6 +413,7 @@ public class RegisterBean
     private String phoneNumber;
     private String dateOfBirth;
     private String email;
+    private String referenceNumber;
     private String fathersFirstName;
     private String fathersSecondName;
     private String mothersFirstName;

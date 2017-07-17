@@ -10,6 +10,8 @@
     <string name="academic_qualification">Academic Qualification</string>
     <string name="function">Function</string>
     <string name="submit">Submit</string>
+    <string name="submit_form_to_mail">Submit Form To Mail</string>
+    <string name="register_user_data">Register User Data</string>
     <string name="accepet_terms_conds">I Agree with Government Jobs Terms and Conditions</string>
 
     <!--for Registration form-->
@@ -17,6 +19,7 @@
     <string name="application_ref_number">Application reference no.</string>
     <string name="aadhar_number">Aadhar Number</string>
     <string name="name">Name</string>
+    <string name="register1">Register</string>
     <string name="fathers_name">Father\'s Name</string>
     <string name="mothers_name">Mother\'s Name</string>
     <string name="current_address">CURRENT ADDRESS</string>

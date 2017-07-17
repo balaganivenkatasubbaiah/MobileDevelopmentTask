@@ -1,8 +1,22 @@
 package com.example.mobiledevelopmenttask;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,12 +24,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -27,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     private MaterialBetterSpinner religionSpinner,genderSpinner,martialStatusSpinner,examinationLevelSpinner,passingYearSpinner
             ,boardOrUniversitySpinner,castCategorySpinner,postHeldSpinner,officeInstOrgSpinner,scaleOfPaySpinner,natureOfDutiesSpinner
             ,exactNameOfPostSpinner,organisationNameSpinner,durationSpinner;
-    private CheckBox isPermanentSameAsCurrent ;
+    private CheckBox isPermanentSameAsCurrent,registerTermsAndCondCheck ;
     private Button register;
     private String[] religiondata = {"Hindus","Muslims","Christians","Sikhs","Buddhists","Jains","Others"};
     private  String[] genderData = {"Male","Female","others"};
@@ -45,25 +66,75 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     private  String[] durationData = {"6 Months","1 Years","2 years","3 years","4 years","5 years"};
     private  String[] organisationData = {"Main Brain Tech","TCS","Infosys","HCL","IBM","CGI"};
     RegisterBean registerBean = new RegisterBean();
-    DatePickerDialog datePickerDialog;
-    int Year, Month, Day ;
-    Calendar calendar ;
-    ArrayList<String> years = new ArrayList<String>();
-    int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+    private DatePickerDialog datePickerDialog;
+    private int Year, Month, Day ;
+    private  Calendar calendar ;
+    private ArrayList<String> years = new ArrayList<String>();
+    private  int thisYear = Calendar.getInstance().get(Calendar.YEAR);
 
     private int variable;
-
-
+    private LinearLayout OpenGallery,OpenCamera;
+    private int width,height;
+    private AlertDialog alert;
+    private  static  final  int CAMERA_REQUEST=654;
+    private  static  final int GALLERY_REQUEST=566;
+    Uri outputFileUri;
+    public static File sdImageMainDirectory;
+    private  ImageView profilePic;
+    private  Bitmap imageBitmap;
+    private TextView applicationRefNumber;
+    private String referenceNumber;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_form);
 
+        DisplayMetrics mertics=this.getResources().getDisplayMetrics();
+        width=mertics.widthPixels;
+        height=mertics.heightPixels;
+
+        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        toolbar.setTitle(getResources().getString(R.string.register1));
+        toolbar.setTitleTextColor(Color.WHITE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                RegisterActivity.this.finish();
+            }
+        });
         calendar = Calendar.getInstance();
 
         Year = calendar.get(Calendar.YEAR) ;
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // for taking pic
+        File root = new File(Environment.getExternalStorageDirectory()
+                + File.separator + "Profile"
+                + File.separator);
+
+        if (!root.exists())
+        {
+            root.mkdirs();
+        } else {
+            root.delete();
+            root.mkdirs();
+        }
+
+        sdImageMainDirectory = new File(root, String.valueOf(System
+                .currentTimeMillis()) + "frames.jpg");
+
+
+        referenceNumber = generateRandomNumber();
+        applicationRefNumber = (TextView) findViewById(R.id.application_ref_no);
+        applicationRefNumber.setText(getResources().getText(R.string.application_ref_number)+"\n"+referenceNumber);
 
         inputAadhar = (EditText) findViewById(R.id.input_aadhar_number);
         inputName = (EditText) findViewById(R.id.input_name);
@@ -116,7 +187,15 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         durationSpinner = (MaterialBetterSpinner) findViewById(R.id.duration_spinner);
         jobDescriptSpinner = (EditText) findViewById(R.id.job_description_spinner);
 
+        profilePic = (ImageView) findViewById(R.id.profile_pic);
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCameraGallery();
+            }
+        });
         isPermanentSameAsCurrent = (CheckBox) findViewById(R.id.check_current_same_as_permanent);
+        registerTermsAndCondCheck = (CheckBox) findViewById(R.id.registration_accept_terms_conds_check);
         isPermanentSameAsCurrent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -142,7 +221,8 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                 }
             }
         });
-        register = (Button) findViewById(R.id.btn_register);
+
+
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, religiondata);
@@ -165,10 +245,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
-        for (int i = 1980; i <= thisYear; i++)
-        {
-            years.add(""+i);
-        }
+
 
         ArrayAdapter<String> martialAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, martialStatusData);
@@ -180,6 +257,11 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
+
+        for (int i = 1980; i <= thisYear; i++)
+        {
+            years.add(""+i);
+        }
         ArrayAdapter<String> passingYearAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, years);
         passingYearSpinner.setAdapter(passingYearAdapter);
@@ -332,11 +414,14 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
 
             }
         });
+
+        register = (Button) findViewById(R.id.btn_register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
+                registerBean.setReferenceNumber(referenceNumber);
                 registerBean.setAadharNumber(inputAadhar.getText().toString().trim());
                 registerBean.setPersonName(inputName.getText().toString().trim());
                 registerBean.setPhoneNumber(inputPhone.getText().toString().trim());
@@ -372,13 +457,45 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                 registerBean.setFrom(inputFrom.getText().toString().trim());
                 registerBean.setTo(inputTo.getText().toString().trim());
                 registerBean.setDate(inputDate.getText().toString().trim());
-                SqliteHelper helper = new SqliteHelper(RegisterActivity.this);
-                helper.addContact(registerBean);
+
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                if(imageBitmap!=null)
+                {
+                    imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    byte[] buffer=out.toByteArray();
+
+                    registerBean.setImage(buffer);
+                }
+
+                if(registerTermsAndCondCheck.isChecked())
+                {
+                    SqliteHelper helper = new SqliteHelper(RegisterActivity.this);
+                    helper.addContact(registerBean);
+
+
+                }
+                else
+                {
+                    Toast.makeText(RegisterActivity.this, "Please Accept Terms & Conditions.", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
     }
 
+    private  String generateRandomNumber()
+    {
+        char[] chars = "1234567890".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        String referenceNumber = sb.toString();
+        return referenceNumber;
+    }
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = "" + dayOfMonth + "-" + (monthOfYear+1)+ "-" + year;
@@ -391,5 +508,124 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             inputTo.setText(date);
         else if(variable==4)
             inputDate.setText(date);
+    }
+
+    public void openCameraGallery()
+    {
+
+
+        AlertDialog.Builder opencameragallery; opencameragallery = new AlertDialog.Builder(RegisterActivity.this);
+        LayoutInflater lf=(LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View vv=lf.inflate(R.layout.opencaremagarllerylayout, null);
+
+        opencameragallery.setView(vv);
+        opencameragallery.setTitle(Html.fromHtml("<font color='#141414'>Choose</font>"));
+        OpenCamera=(LinearLayout) vv.findViewById(R.id.OpenCamera);
+        OpenCamera.getLayoutParams().height=width/3;
+        OpenGallery=(LinearLayout) vv.findViewById(R.id.OpenGallery);
+        OpenGallery.getLayoutParams().height=width/3;
+        ImageView cameraimg=(ImageView)vv.findViewById(R.id.cameraimg);
+        cameraimg.getLayoutParams().width=width/6;
+
+        cameraimg.getLayoutParams().height=width/6;
+
+        ImageView galleryimg=(ImageView)vv.findViewById(R.id.galleryimage);
+        galleryimg.getLayoutParams().width=width/6;
+
+        galleryimg.getLayoutParams().height=width/6;
+        opencameragallery.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                dialog.cancel();
+            }
+        });
+
+        alert=opencameragallery.create();
+        alert.setCanceledOnTouchOutside(false);
+        //opencameragallery.setCanceledOnTouchOutside(false);
+
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog)
+            {
+                // TODO Auto-generated method stub
+                alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#141414"));
+            }
+        });
+        alert.show();
+        OpenCamera.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                alert.dismiss();
+
+               /* outputFileUri = Uri.fromFile(sdImageMainDirectory);
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+
+                intent.putExtra("return-data", true);
+                startActivityForResult(intent, CAMERA_REQUEST);*/
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//					startActivityForResult(new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE),camera_ReqCode);
+            }
+        });
+
+        OpenGallery.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                alert.dismiss();
+
+                startActivityForResult(new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI), GALLERY_REQUEST);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==CAMERA_REQUEST && resultCode==RESULT_OK)
+        {
+            try
+            {
+
+                imageBitmap = (Bitmap) data.getExtras().get("data");
+              /*  final float densityMultiplier = this.getResources().getDisplayMetrics().density;
+                float newHeight = 150;
+                int h= (int) (newHeight*densityMultiplier);
+                int w= (int) (h * imageBitmap.getWidth()/((double) imageBitmap.getHeight()));
+                imageBitmap=Bitmap.createScaledBitmap(imageBitmap, w, h, true);*/
+                profilePic.setImageBitmap(imageBitmap);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                Log.e("Image  Error", "****" + e.getMessage());
+            }
+        }
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                final float densityMultiplier = this.getResources().getDisplayMetrics().density;
+                float newHeight = 150;
+                int h= (int) (newHeight*densityMultiplier);
+                int w= (int) (h * imageBitmap.getWidth()/((double) imageBitmap.getHeight()));
+                imageBitmap=Bitmap.createScaledBitmap(imageBitmap, w, h, true);
+                profilePic.setImageBitmap(imageBitmap);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                Log.e("Image  Error", "****" + e.getMessage());
+            }
+        }
     }
 }
