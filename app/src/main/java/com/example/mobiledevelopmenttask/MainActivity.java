@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        mydatabase = new MyDataBase(this, "mydb");
+        mydatabase = new MyDataBase(this);
 
 
         editText_name=(EditText)findViewById(R.id.editText_name);
@@ -58,13 +58,9 @@ public class MainActivity extends AppCompatActivity {
                 else
                 {
                     mydatabase.insertRecord(empname, empcellno,emppass);
-
                     Intent intent = new Intent(MainActivity.this,SecondActivity.class);
                     startActivity(intent);
                 }
-
-
-
             }
         });
 

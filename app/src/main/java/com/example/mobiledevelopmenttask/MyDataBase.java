@@ -25,7 +25,7 @@ public class MyDataBase extends SQLiteOpenHelper
     private static final String KEY_PHONE= "ephone";
     private static final String KEY_PASSWORD= "epassword";
 
-    public MyDataBase(MainActivity mainActivity, String mydb)
+    public MyDataBase(MainActivity mainActivity)
     {
         super(mainActivity, DATABASE_NAME, null, DATABASE_VERSION);
         context=mainActivity;
