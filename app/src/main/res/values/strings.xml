@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Mobile Development Task</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone</string>
+    <string name="current_location">Current Location</string>
+    <string name="total_exp">Toatal Experience</string>
+    <string name="academic_qualification">Academic Qualification</string>
+    <string name="function">Function</string>
+    <string name="submit">Submit</string>
+    <string name="accepet_terms_conds">I Agree with Government Jobs Terms and Conditions</string>
+
+    <!--for Registration form-->
+
+    <string name="application_ref_number">Application reference no.</string>
+    <string name="aadhar_number">Aadhar Number</string>
+    <string name="name">Name</string>
+    <string name="fathers_name">Father\'s Name</string>
+    <string name="mothers_name">Mother\'s Name</string>
+    <string name="current_address">CURRENT ADDRESS</string>
+    <string name="address1">Address 1</string>
+    <string name="address2">Address 2</string>
+    <string name="pincode">Pincode</string>
+    <string name="city">City</string>
+    <string name="district">District</string>
+    <string name="state">State</string>
+    <string name="permanent_addr_check">Permanent address same as current address</string>
+    <string name="permanent_address">PERMANENT ADDRESS</string>
+    <string name="religion">Religion</string>
+    <string name="gender">Gender</string>
+    <string name="martial_status">Martial Status</string>
+    <string name="academic_record">ACADEMIC RECORD</string>
+    <string name="examination_level">Examination Level</string>
+    <string name="passing_year">Passing Year</string>
+    <string name="board_university">Board/ University</string>
+    <string name="marks">Marks</string>
+    <string name="division_grade_cgpa">Division/ Grade/ CGPA</string>
+    <string name="major_subjects_of_study">Major Subjects of Study</string>
+    <string name="cast_category">Cast Category</string>
+    <string name="post_held">Post Held</string>
+    <string name="details_of_emp_in_chronological_order">DETAILS OF EMPLOYMENT IN CHRONOLOGICAL ORDER</string>
+    <string name="office_inst_organisation">Office/ Institution/ Organisation</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="scale_of_pay_last_basic_pay">Scale of Pay/ Last basic Pay</string>
+    <string name="nature_of_duties">Nature of Duties</string>
+    <string name="nature_of_present_employment">Nature of Present Employment (temporary/ contract)</string>
+    <string name="total_emoluments_per_month_drawn">Total Emoluments per Month Drawn</string>
+    <string name="additional_information">Additional Information (sustainability of the post)</string>
+    <string name="remarks">Remarks (if any)</string>
+    <string name="professional_exp">PROFESSIONAL EXPERIENCE</string>
+    <string name="exact_name_of_post">Exact Name of the Post</string>
+    <string name="organisation_name">Organisation Name</string>
+    <string name="duration">Duration</string>
+    <string name="job_description">Job Description</string>
+    <string name="date">Date</string>
+    <string name="full_name_of_candidate">Full name of the Candidate</string>
+    <string name="signature">Signature</string>
+    <string name="register">Register</string>
+    <string name="passport_size_photo">Passport size photo</string>
+    <string name="registraion_terms_conds_policy">I certify that the infromation provided by me in this form is true, complete and correct to the best of my knowledge and belief. I understand that any misinterpretation or omission of any information made on the application forms or any other documents requested by the department may result in canellation of and future application in the department.</string>
+
+
+</resources>
